@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'data_structure_project',##
+    'data_structure.apps.DataStructureConfig', ##
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
