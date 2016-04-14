@@ -18,7 +18,8 @@ class Class2Test(TestCase):
 
     def test_fibonacci(self):
         c = class_02
-        self.assertEqual(c.fibonacci(5),8)
+        self.assertEqual(c.fibonacci(50),7778742049)
+        #self.assertEqual(c.fibonacci(5), 8)
 
     def test_cres_natural_order(self):
         c = class_02
@@ -87,7 +88,7 @@ class Class2Test(TestCase):
     def test_josephus(self):
         c = class_02
         c.josephus(5, 2)
-        #self.assertEqual(c.josephus(5, 2), 8791)
+        self.assertEqual(c.josephus(6, 2), 1)
 
     def test_triangle(self):
         c = class_02
@@ -97,9 +98,37 @@ class Class2Test(TestCase):
         c = class_02
         self.assertEqual(c.quad(5), 23)
 
-    def test_moc(self):
+    def test_mdc(self):
         c = class_02
-        self.assertEqual(c.moc(12,9), 3)
+        self.assertEqual(c.mdc(12,9), 3)
+
+
+    def test_seekvalue2(self):
+        c = class_02
+        array = [1, 12, 3, 4, 5, 6, 7, 8, 9, 13]
+        self.assertEqual(c.seekvalue2(array, 9, 10), False)
+        self.assertEqual(c.seekvalue2(array, 9, 1), True)
+
+    def test_is_true(self):
+        c = class_02
+        array = [0,1,2,3,4,5,6,7,8,9,10]
+        self.assertEqual(c.buscabinaria(array, 0, 10, 5),True)
+        self.assertEqual(c.buscabinaria(array, 0, 10, 2),True)
+        self.assertEqual(c.buscabinaria(array, 0, 10, 9), True)
+        self.assertEqual(c.buscabinaria(array, 0, 10, 10), True)
+        self.assertEqual(c.buscabinaria(array, 0, 10, 0), True)
+        self.assertEqual(c.buscabinaria(array, 0, 10, 55), False)
+
+    def test_is_true(self):
+        c = class_02
+        self.assertEqual(c.inverter(123, 2), 321)
+        self.assertEqual(c.inverter(1234, 3), 4321)
+
+    def test_inv_array(self):
+        c = class_02
+        c.v = [1,2,3,4,5,6,7,8,9]
+        c.inv_array(0,8)
+        print(c.v)
 
 if __name__ == '__main__':
     TestCase.main()
