@@ -1,9 +1,7 @@
-from django.db.migrations import graph
 from pip._vendor.requests.packages.urllib3.connectionpool import xrange
 
 __author__ = 'rene_'
 
-from pythonds.graphs import PriorityQueue, Vertex
 
 ######################
 ##### chapter 8 ######
@@ -416,84 +414,58 @@ def dfs_cut_edge(graph, vertex):
 
 ######################
 ##### dijkstra  ######
-#from: http://www.thedatagent.com/2015/12/10/dijkstras-algorithm-python/
 ######################
 
-def dijkstra(graph_dict, start, end):
-    """
-    This function implements Dijkstra's Shortest Path
+def dijkstra(graph, start, end):
+    D = {} # Final distances dict
+    P = {} # Predecessor dict
 
-    It takes as its inputs:
-        i. a graph represented by a "dictionary
-           of dictionaries" structure,
-           i.e. {node: {neighbour: weight};
-        ii. a starting node in that graph; and
-        iii. an ending node for that graph
+    # Fill the dicts with default values
+    for node in graph.keys():
+        D[node] = -1 # Vertices are unreachable
+        P[node] = "" # Vertices have no predecessors
 
-    The algorithm returns:
-     i. the shortest path with
-     ii. its associated cost
-    """
-    # empty dictionary to hold distances
-    distances = {}
-    # list of vertices in path to current vertex
-    predecessors = {}
+    D[start] = 0 # The start vertex needs no move
 
-    # get all the nodes that need to be assessed
-    to_assess = graph_dict.keys()
+    unseen_nodes = list(graph.keys()) # All nodes are unseen
 
-    # set all initial distances to infinity
-    #  and no predecessor for any node
-    for node in graph_dict:
-        distances[node] = float('inf')
-        predecessors[node] = None
+    while len(unseen_nodes) > 0:
+        # Select the node with the lowest value in D (final distance)
+        shortest = None
+        node = ''
+        for temp_node in unseen_nodes:
+            if shortest == None:
+                shortest = D[temp_node]
+                node = temp_node
+            elif D[temp_node] < shortest:
+                shortest = D[temp_node]
+                node = temp_node
+        # Remove the selected node from unseen_nodes
+        unseen_nodes.remove(node)
 
-    # set the initial collection of
-    # permanently labelled nodes to be empty
-    sp_set = []
+        # For each child (ie: connected vertex) of the current node
+        for child_node, child_value in graph[node].items():
+            if D[child_node] < D[node] + child_value:
+                D[child_node] = D[node] + child_value
+                # To go to child_node, you have to go through node
+                P[child_node] = node
 
-    # set the distance from the start node to be 0
-    distances[start] = 0
+    # Set a clean path
+    path = []
 
-    # as long as there are still nodes to assess:
-    while len(sp_set) < len(to_assess):
+    # We begin from the end
+    node = end
+    # While we are not arrived at the beginning
+    while not node == start:
+        if path.count(node) == 0:
+            path.insert(0, node) # Insert the predecessor of the current node
+            node = P[node] # The current node becomes its predecessor
+        else:
+            break
+    path.insert(0, start) # Finally, insert the start vertex
+    return path
 
-        # chop out any nodes with a permanent label
-        still_in = {node: distances[node]\
-                    for node in [node for node in\
-                    to_assess if node not in sp_set]}
-
-        # find the closest node to the current node
-        closest = min(still_in, key = distances.get)
-
-        # and add it to the permanently labelled nodes
-        sp_set.append(closest)
-
-        # then for all the neighbours of
-        # the closest node (that was just added to
-        # the permanent set)
-        for node in graph_dict[closest]:
-            # if a shorter path to that node can be found
-            if distances[node] > distances[closest] +\
-                       graph[closest][node]['weight']:
-
-                # update the distance with
-                # that shorter distance
-                distances[node] = distances[closest] +\
-                       graph[closest][node]['weight']
-
-                # set the predecessor for that node
-                predecessors[node] = closest
-
-    # once the loop is complete the final
-    # path needs to be calculated - this can
-    # be done by backtracking through the predecessors
-    path = [end]
-    while start not in path:
-        path.append(predecessors[path[-1]])
-
-    # return the path in order start -> end, and it's cost
-    return path[::-1], distances[end]
+# print shortest_path("Munich", "Stuttgart")
 
 
 def kruskal():

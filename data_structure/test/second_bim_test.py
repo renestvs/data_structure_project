@@ -1,6 +1,7 @@
 __author__ = 'rene_'
 
 from django.test import TestCase
+
 from data_structure.second_bim import graphs, pattern_searching
 
 
@@ -9,6 +10,7 @@ class Second_Bim_Test(TestCase):
     # =================== DFS ======================
     # ==============================================
     def dfs_test(self):
+
         graph = {'A': set(['B', 'C']),
                  'B': set(['A', 'D', 'E']),
                  'C': set(['A', 'F']),
@@ -16,6 +18,7 @@ class Second_Bim_Test(TestCase):
                  'E': set(['B', 'F']),
                  'F': set(['C', 'E'])}
 
+        graph.__setattr__("name")
         c = graphs
         self.assertEqual(c.dfs(graph, 'A'), {'E', 'C', 'D', 'B', 'A', 'F'})
         self.assertEqual(c.dfs_recursive(graph, 'A'), {'B', 'E', 'D', 'C', 'F', 'A'})
@@ -164,15 +167,19 @@ class Second_Bim_Test(TestCase):
     # ================= Dijkstra ===================
     # ==============================================
     def dijkstra_test(self):
-        graph = {1: {2: 7, 3: 1},
-                 2: {4: 4, 6: 1},
-                 3: {2: 5, 5: 2, 6: 7},
-                 4: {},
-                 5: {2: 2, 4: 5},
-                 6: {5: 3}}
+        graph = {'A': {'B': 10, 'D': 4, 'F': 10},
+                 'B': {'E': 5, 'J': 10, 'I': 17},
+                 'C': {'A': 4, 'D': 10, 'E': 16},
+                 'D': {'F': 12, 'G': 21},
+                 'E': {'G': 4},
+                 'F': {'H': 3},
+                 'G': {'J': 3},
+                 'H': {'G': 3, 'J': 5},
+                 'I': {},
+                 'J': {'I': 8}}
 
         c = graphs
-        c.dijkstra(graph, 0, 0)
+        print(c.dijkstra(graph, 'C', 'I'))
 
     # ==============================================
     # ================= patterns ===================
