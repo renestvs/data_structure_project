@@ -421,6 +421,7 @@ def dijkstra(graph, start, end):
     P = {} # Predecessor dict
 
     # Fill the dicts with default values
+    print(graph.keys())
     for node in graph.keys():
         D[node] = -1 # Vertices are unreachable
         P[node] = "" # Vertices have no predecessors
@@ -428,12 +429,14 @@ def dijkstra(graph, start, end):
     D[start] = 0 # The start vertex needs no move
 
     unseen_nodes = list(graph.keys()) # All nodes are unseen
+    print("unseen_nodes = ", unseen_nodes)
 
     while len(unseen_nodes) > 0:
         # Select the node with the lowest value in D (final distance)
         shortest = None
         node = ''
-        for temp_node in unseen_nodes:
+        for temp_node in unseen_nodes[:]:
+            print("temp_node = ", temp_node, " - shortest = ", shortest)
             if shortest == None:
                 shortest = D[temp_node]
                 node = temp_node
@@ -442,6 +445,7 @@ def dijkstra(graph, start, end):
                 node = temp_node
         # Remove the selected node from unseen_nodes
         unseen_nodes.remove(node)
+        print("removed node = ", node, "unseen_nodes.remove(node) = ", unseen_nodes)
 
         # For each child (ie: connected vertex) of the current node
         for child_node, child_value in graph[node].items():
@@ -449,6 +453,8 @@ def dijkstra(graph, start, end):
                 D[child_node] = D[node] + child_value
                 # To go to child_node, you have to go through node
                 P[child_node] = node
+        print(P)
+        print(D)
 
     # Set a clean path
     path = []
@@ -456,6 +462,7 @@ def dijkstra(graph, start, end):
     # We begin from the end
     node = end
     # While we are not arrived at the beginning
+    print(D, P)
     while not node == start:
         if path.count(node) == 0:
             path.insert(0, node) # Insert the predecessor of the current node
